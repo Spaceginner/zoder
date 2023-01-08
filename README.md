@@ -1,3 +1,3 @@
 # Zoder
 
-An experimental loss-less image compression algorithm
+An experimental lossless image compression algorithm

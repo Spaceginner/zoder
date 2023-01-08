@@ -5,7 +5,7 @@ from modules import testing
 def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog='zoder',
-        description='An experimental loss-less image compression algorithm'
+        description='An experimental lossless image compression algorithm'
     )
 
     parser.add_argument('mode', choices=['c', 'd'], help='c - compress; d - decompress')
