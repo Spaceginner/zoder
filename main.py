@@ -1,4 +1,5 @@
 import argparse
+from modules import testing
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -24,7 +25,10 @@ def main(mode: str, input_filename: str, output_filename: str | None, test: bool
         raise NotImplementedError
 
     if test:
-        pass
+        for elem in ['enc']:
+            test_res = testing.test(elem)
+
+            print(f'Test result for {elem}: {test_res}')
     else:
         if output_filename is None:
             output_filename = input_filename + ".zdr"
