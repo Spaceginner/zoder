@@ -1,0 +1,2 @@
+def decode():
+    raise NotImplementedError

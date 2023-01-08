@@ -1,0 +1,2 @@
+def compress():
+    raise NotImplementedError

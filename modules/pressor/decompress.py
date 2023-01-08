@@ -1,0 +1,2 @@
+def decompress():
+    raise NotImplementedError
