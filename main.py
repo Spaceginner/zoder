@@ -9,7 +9,7 @@ def create_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument('mode', choices=['c', 'd'], help='c - compress; d - decompress')
-    parser.add_argument('-i', '--input', help='path to a file to be processed', required=True)
+    parser.add_argument('-i', '--input', help='path to a file to be processed')
 
     parser.add_argument('-o', '--output', help='path where to store compressed file')
 
@@ -26,14 +26,10 @@ def main(mode: str, input_filename: str, output_filename: str | None, test: bool
 
     if test:
         for elem in ['enc']:
-            test_res = testing.test(elem)
-
-            print(f'Test result for {elem}: {test_res}')
+            print(f'Test result for {elem}: {"success" if testing.test(elem) else "fail"}')
     else:
         if output_filename is None:
             output_filename = input_filename + ".zdr"
-
-
 
 
 if __name__ == '__main__':
