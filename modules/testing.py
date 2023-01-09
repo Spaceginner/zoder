@@ -26,6 +26,6 @@ def _enc():
 
 def _com():
     check = json.load(open(os.path.join("test", "riwers", "compress.jzdr")))
-    answ = compress.compress(json.load(open(os.path.join("test", "resources", "compress.json"))))
+    answ = compressor.compress(json.load(open(os.path.join("test", "resources", "compress.json"))))
 
     return check == answ
