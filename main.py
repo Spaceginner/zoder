@@ -12,26 +12,29 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument('-i', '--input', help='path to a file to be processed')
 
     parser.add_argument('-o', '--output', help='path where to store compressed file')
+    parser.add_argument('-x', '--experimental', help='store file in experimental format', action='store_true')
 
     parser.add_argument('--test', action='store_true')
 
     return parser
 
 
-def main(mode: str, input_filename: str, output_filename: str | None, test: bool):
+def main(mode: str, input_filename: str, output_filename: str | None, experimental: bool, test: bool):
     if mode not in ['c', 'd']:
         raise ValueError(f'argument `mode` must be \'c\' or \'d\' not {mode}')
     if mode == 'd':
         raise NotImplementedError
+    if experimental:
+        raise NotImplementedError
 
     if test:
-        for elem in ['enc']:
+        for elem in ['enc', 'com']:
             print(f'Test result for {elem}: {"success" if testing.test(elem) else "fail"}')
     else:
         if output_filename is None:
-            output_filename = input_filename + ".zdr"
+            output_filename = input_filename + (".zdr" if experimental else ".jzdr")
 
 
 if __name__ == '__main__':
     args = create_parser().parse_args()
-    main(args.mode, args.input, args.output, args.test)
+    main(args.mode, args.input, args.output, args.experimental, args.test)
