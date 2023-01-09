@@ -21,14 +21,14 @@ def test(element: str) -> int:
 
 
 def _enc():
-    check = json.load(open(os.path.join("test", "riwers", "encode.json")))
-    answ = encoder.encode(Image.open(os.path.join('test', 'resources', 'encode.png')))
+    check = json.load(open(os.path.join("test", "image.ucnjzdr")))
+    answ = encoder.encode(Image.open(os.path.join('test', 'image.png')))
 
     return check == answ
 
 def _dec():
-    check = Image.open(os.path.join("test", "riwers", "decode.png"))
-    answ = decoder.decode(json.load(open(os.path.join("test", "resources", "decode.json"))))
+    check = Image.open(os.path.join("test", "image.png"))
+    answ = decoder.decode(json.load(open(os.path.join("test", "image.ucnjzdr"))))
 
     is_same = True
     for y in range(check.size[1]):
@@ -40,7 +40,7 @@ def _dec():
     return is_same
 
 def _com():
-    check = json.load(open(os.path.join("test", "riwers", "compress.jzdr")))
-    answ = compressor.compress(json.load(open(os.path.join("test", "resources", "compress.json"))))
+    check = json.load(open(os.path.join("test", "image.jzdr")))
+    answ = compressor.compress(json.load(open(os.path.join("test", "image.ucnjzdr"))))
 
     return check == answ
