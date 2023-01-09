@@ -4,7 +4,7 @@ import os.path
 from PIL import Image
 
 from modules.coder import encoder
-from modules.pressor import compress
+from modules.pressor import compressor
 
 
 def test(element: str) -> int:

@@ -5,7 +5,7 @@ from PIL import Image
 
 from modules import testing
 from modules.coder import encoder
-from modules.pressor import compress
+from modules.pressor import compressor
 
 
 def create_parser() -> argparse.ArgumentParser:
