@@ -34,7 +34,7 @@ def main(mode: str, input_filename: str, output_filename: str | None, experiment
         raise NotImplementedError
 
     if test:
-        for elem in ['enc', 'com']:
+        for elem in ['enc', 'dec', 'com']:
             print(f'Test result for {elem}: {"success" if testing.test(elem) else "fail"}')
     else:
         if output_filename is None:
