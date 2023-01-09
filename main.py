@@ -1,5 +1,11 @@
 import argparse
+import json
+
+from PIL import Image
+
 from modules import testing
+from modules.coder import encoder
+from modules.pressor import compress
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -9,7 +15,7 @@ def create_parser() -> argparse.ArgumentParser:
     )
 
     parser.add_argument('mode', choices=['c', 'd'], help='c - compress; d - decompress')
-    parser.add_argument('-i', '--input', help='path to a file to be processed')
+    parser.add_argument('-i', '--input', help='path to a file to be processed', required=True)
 
     parser.add_argument('-o', '--output', help='path where to store compressed file')
     parser.add_argument('-x', '--experimental', help='store file in experimental format', action='store_true')
@@ -33,6 +39,14 @@ def main(mode: str, input_filename: str, output_filename: str | None, experiment
     else:
         if output_filename is None:
             output_filename = input_filename + (".zdr" if experimental else ".jzdr")
+
+        image = Image.open(input_filename)
+
+        ucnjzdr_image = encoder.encode(image)
+        jzdr_image = compress.compress(ucnjzdr_image)
+
+        with open(output_filename, 'w') as io_stream:
+            json.dump(jzdr_image, io_stream, indent=None)
 
 
 if __name__ == '__main__':

@@ -14,7 +14,7 @@ def encode(image: Image.Image) -> list[list[bool]]:
     # for y in range(image.size[1]):
     #     for x in range(image.size[0]):
     #         print('▓▓' if ucnjzdr_image[y][x] else '░░', end='')
-    # 
+    #
     #     print()
 
     return ucnjzdr_image
