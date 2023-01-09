@@ -43,7 +43,7 @@ def main(mode: str, input_filename: str, output_filename: str | None, experiment
         image = Image.open(input_filename)
 
         ucnjzdr_image = encoder.encode(image)
-        jzdr_image = compress.compress(ucnjzdr_image)
+        jzdr_image = compressor.compress(ucnjzdr_image)
 
         with open(output_filename, 'w') as io_stream:
             json.dump(jzdr_image, io_stream, indent=None)
