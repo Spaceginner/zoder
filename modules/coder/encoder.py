@@ -11,10 +11,4 @@ def encode(image: Image.Image) -> list[list[bool]]:
     for i in range(len(ims_image)):
         ucnjzdr_image[i // x_res][i % x_res] = ims_image[i]
 
-    # for y in range(image.size[1]):
-    #     for x in range(image.size[0]):
-    #         print('▓▓' if ucnjzdr_image[y][x] else '░░', end='')
-    #
-    #     print()
-
     return ucnjzdr_image
