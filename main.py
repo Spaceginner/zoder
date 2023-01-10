@@ -21,11 +21,12 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument('-x', '--experimental', help='store file in experimental format', action='store_true')
 
     parser.add_argument('--test', action='store_true')
+    parser.add_argument('--dumb', action='store_true')
 
     return parser
 
 
-def main(mode: str, input_filename: str, output_filename: str | None, experimental: bool, test: bool):
+def main(mode: str, input_filename: str, output_filename: str | None, experimental: bool, test: bool, is_dumb: bool):
     if mode not in ['c', 'd']:
         raise ValueError(f'argument `mode` must be \'c\' or \'d\' not {mode}')
     if experimental:
@@ -51,7 +52,7 @@ def main(mode: str, input_filename: str, output_filename: str | None, experiment
                 output_filename = input_filename + ".png"
 
             jzdr_image = json.load(open(input_filename))
-            ucnjzdr_image = decompressor.decompress(jzdr_image)
+            ucnjzdr_image = decompressor.decompress(jzdr_image, is_dumb)
 
             image = decoder.decode(ucnjzdr_image)
 
@@ -60,4 +61,4 @@ def main(mode: str, input_filename: str, output_filename: str | None, experiment
 
 if __name__ == '__main__':
     args = create_parser().parse_args()
-    main(args.mode, args.input, args.output, args.experimental, args.test)
+    main(args.mode, args.input, args.output, args.experimental, args.test, args.dumb)
