@@ -9,31 +9,6 @@ def decompress(jzdr_image: dict, dumb_mode: bool = True) -> list[list[bool]]:
             ucnjzdr_image = [[bool() for _ in range(len(jzdr_image['matrix'][0]))] for _ in range(len(jzdr_image['matrix'][1]))]
 
             # Stage one: filling semi-full and full lines
-
-            # for x in range(len(ucnjzdr_image[0])):
-            #     if jzdr_image['matrix'][0][x][0] == len(ucnjzdr_image):
-            #         for i in range(len(jzdr_image['matrix'][0][x])):
-            #             dsr_block_size = jzdr_image['matrix'][0][x][i]
-            #
-            #             for y in range(dsr_block_size):
-            #                 ucnjzdr_image[y][x] = True
-            #
-            #         jzdr_image['matrix'][0][x].pop(0)
-            #
-            # jzdr_image = utils.validate_jzdr(jzdr_image)
-            #
-            # for y in range(len(ucnjzdr_image)):
-            #     if jzdr_image['matrix'][1][y][0] == len(ucnjzdr_image[0]):
-            #         for i in range(len(jzdr_image['matrix'][1][y])):
-            #             dsr_block_size = jzdr_image['matrix'][1][y][i]
-            #
-            #             for x in range(dsr_block_size):
-            #                 ucnjzdr_image[y][x] = True
-            #
-            #         jzdr_image['matrix'][1][y].pop(0)
-            #
-            # jzdr_image = utils.validate_jzdr(jzdr_image)
-
             for x in range(len(ucnjzdr_image[0])):
                 if sum(jzdr_image['matrix'][0][x]) + len(jzdr_image['matrix'][0][x]) - 1 == len(ucnjzdr_image):
                     offset = 0
