@@ -1,5 +1,22 @@
+import math
+import multiprocessing
+import os
+from decimal import *
+
 from modules.pressor import compressor
 from modules import utils
+
+
+def _find_ucnjzdr_image(args):
+    start, end, jzdr_image = args[0], args[1], args[2]
+
+    ucnjzdr_candidate = utils.create_ucnjzdr_image(len(jzdr_image['matrix'][0]), len(jzdr_image['matrix'][1]),
+                                                   state=start)
+    for _ in range(start, end):
+        if compressor.compress(ucnjzdr_candidate)['matrix'] != jzdr_image['matrix']:
+            ucnjzdr_candidate = utils.iterate_ucnjzdr_image(ucnjzdr_candidate)
+        else:
+            return ucnjzdr_candidate
 
 
 # TODO make decompress() less garbage and more *intelligent* ie more generalized
@@ -96,14 +113,25 @@ def decompress(jzdr_image: dict, dumb_mode: bool = True) -> list[list[bool]]:
             return ucnjzdr_image
         else:
             # The whole logic behind dumb mode is to try every possible combination of the image with the given size, until it matches
-            # this approach should be more robust, but also really slow
+            # this approach should be more robust, but also really slow, even with multiprocessing
+
+            def distribute_load(total: int):
+                tasks_per_process = math.ceil(Decimal(total) / Decimal(os.cpu_count()))
+
+                distribution = []
+                start = 0
+                end = tasks_per_process
+                for i in range(os.cpu_count()):
+                    distribution.append([start, end, jzdr_image])
+                    start += tasks_per_process + 1
+                    end += tasks_per_process + 1
+                    end = min(end, total)
+
+                return distribution
+
             max_combinations = 2 ** (len(jzdr_image['matrix'][0]) * len(jzdr_image['matrix'][1])) - 1
+            with multiprocessing.Pool() as pool:
+                for ucnjzdr_image in pool.imap_unordered(_find_ucnjzdr_image, distribute_load(max_combinations)):
+                    if ucnjzdr_image:
+                        return ucnjzdr_image
 
-            ucnjzdr_candidate = utils.create_ucnjzdr_image(len(jzdr_image['matrix'][0]), len(jzdr_image['matrix'][1]))
-            for _ in range(max_combinations):
-                print(f'Testing {_} state...')
-
-                if compressor.compress(ucnjzdr_candidate)['matrix'] != jzdr_image['matrix']:
-                    ucnjzdr_candidate = utils.iterate_ucnjzdr_image(ucnjzdr_candidate)
-                else:
-                    return ucnjzdr_candidate
