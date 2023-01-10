@@ -4,7 +4,7 @@ import os.path
 from PIL import Image
 
 from modules.coder import encoder, decoder
-from modules.pressor import compressor
+from modules.pressor import compressor, decompressor
 
 
 def test(element: str) -> int:
@@ -18,6 +18,8 @@ def test(element: str) -> int:
         return _dec()
     elif element == 'com':
         return _com()
+    elif element == 'decom':
+        return _decom()
 
 
 def _enc():
@@ -42,5 +44,11 @@ def _dec():
 def _com():
     check = json.load(open(os.path.join("test", "image.jzdr")))
     answ = compressor.compress(json.load(open(os.path.join("test", "image.ucnjzdr"))))
+
+    return check == answ
+
+def _decom():
+    check = json.load(open(os.path.join('test', 'image.ucnjzdr')))
+    answ = decompressor.decompress(json.load(open(os.path.join('test', 'image.jzdr'))))
 
     return check == answ

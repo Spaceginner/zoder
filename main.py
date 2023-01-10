@@ -4,8 +4,8 @@ import json
 from PIL import Image
 
 from modules import testing
-from modules.coder import encoder
-from modules.pressor import compressor
+from modules.coder import encoder, decoder
+from modules.pressor import compressor, decompressor
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -28,25 +28,34 @@ def create_parser() -> argparse.ArgumentParser:
 def main(mode: str, input_filename: str, output_filename: str | None, experimental: bool, test: bool):
     if mode not in ['c', 'd']:
         raise ValueError(f'argument `mode` must be \'c\' or \'d\' not {mode}')
-    if mode == 'd':
-        raise NotImplementedError
     if experimental:
         raise NotImplementedError
 
     if test:
-        for elem in ['enc', 'dec', 'com']:
+        for elem in ['enc', 'dec', 'com', 'decom']:
             print(f'Test result for {elem}: {"success" if testing.test(elem) else "fail"}')
     else:
-        if output_filename is None:
-            output_filename = input_filename + (".zdr" if experimental else ".jzdr")
+        if mode == 'c':
+            if output_filename is None:
+                output_filename = input_filename + (".zdr" if experimental else ".jzdr")
 
-        image = Image.open(input_filename)
+            image = Image.open(input_filename)
 
-        ucnjzdr_image = encoder.encode(image)
-        jzdr_image = compressor.compress(ucnjzdr_image)
+            ucnjzdr_image = encoder.encode(image)
+            jzdr_image = compressor.compress(ucnjzdr_image)
 
-        with open(output_filename, 'w') as io_stream:
-            json.dump(jzdr_image, io_stream, indent=None)
+            with open(output_filename, 'w') as io_stream:
+                json.dump(jzdr_image, io_stream, indent=None)
+        elif mode == 'd':
+            if output_filename is None:
+                output_filename = input_filename + ".png"
+
+            jzdr_image = json.load(open(input_filename))
+            ucnjzdr_image = decompressor.decompress(jzdr_image)
+
+            image = decoder.decode(ucnjzdr_image)
+
+            image.save(output_filename)
 
 
 if __name__ == '__main__':
